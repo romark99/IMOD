@@ -4,11 +4,9 @@ public class HelloMessage {
 
     private String name;
 
-    public HelloMessage() {
-    }
+    private String surname;
 
-    public HelloMessage(String name) {
-        this.name = name;
+    public HelloMessage() {
     }
 
     public String getName() {
@@ -19,10 +17,19 @@ public class HelloMessage {
         this.name = name;
     }
 
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
     @Override
     public String toString() {
         return "HelloMessage{" +
                 "name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
                 '}';
     }
 }
