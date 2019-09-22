@@ -1,4 +1,4 @@
-package com.brest.bstu.po1.imod.server_app;
+package com.brest.bstu.po1.imod.web_app;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
