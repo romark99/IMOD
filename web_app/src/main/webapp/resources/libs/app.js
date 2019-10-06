@@ -49,7 +49,12 @@ function connect() {
         stompClient.subscribe('/topic/showHistory' , function (greetings) {
             const fullMessages = JSON.parse(greetings.body);
             showFullMessages(fullMessages);
-        })
+        });
+        stompClient.subscribe('/topic/removeHistory' , function (result) {
+            if (result) {
+                clearScreen();
+            }
+        });
     });
 }
 
@@ -82,7 +87,7 @@ function showHistory() {
 }
 
 function deleteHistory() {
-    stompClient.send("/app/deleteHistory", {});
+    stompClient.send("/app/removeHistory", {});
 }
 
 function showFullMessage(fullMessage) {

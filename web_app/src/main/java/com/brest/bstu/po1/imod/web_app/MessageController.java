@@ -34,9 +34,9 @@ public class MessageController {
 
     @MessageMapping("/removeHistory")
     @SendTo("/topic/removeHistory")
-    public Greeting removeHistory(InputMessage message) throws Exception {
-        return new Greeting(HtmlUtils.htmlEscape(message.getNickname()) + " wrote: '" +
-                            HtmlUtils.htmlEscape(message.getMessage()) + "'");
+    public boolean removeHistory() {
+        greetingDao.removeAllGreetings();
+        return true;
     }
 
 }

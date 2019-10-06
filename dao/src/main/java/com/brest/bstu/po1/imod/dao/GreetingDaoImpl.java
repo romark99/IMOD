@@ -13,7 +13,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
 
-public class GreetingDaoImpl implements GreetingDao{
+public class GreetingDaoImpl implements GreetingDao {
 
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
@@ -27,6 +27,9 @@ public class GreetingDaoImpl implements GreetingDao{
     @Value("${greeting.select}")
     private String GET_ALL_GREETINGS_SQL;
 
+    @Value("${greeting.delete}")
+    private String REMOVE_ALL_GREETINGS_SQL;
+
     public void setNamedParameterJdbcTemplate(
             NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
@@ -38,16 +41,25 @@ public class GreetingDaoImpl implements GreetingDao{
         namedParameters.addValue(CONTENT, greeting.getContent());
 
         KeyHolder generatedKeyHolder = new GeneratedKeyHolder();
-        namedParameterJdbcTemplate.update(ADD_GREETING_SQL, namedParameters, generatedKeyHolder, new String[] {"id"});
+        namedParameterJdbcTemplate
+                .update(ADD_GREETING_SQL, namedParameters, generatedKeyHolder,
+                        new String[]{"id"});
         greeting.setId(Objects.requireNonNull(generatedKeyHolder.getKey()).intValue());
         return greeting;
     }
 
     @Override
     public Greeting[] getAllGreetings() {
-        List<Greeting> greetingList = namedParameterJdbcTemplate.query(GET_ALL_GREETINGS_SQL,
-                                                                       new GreetingRowMapper());
+        List<Greeting> greetingList = namedParameterJdbcTemplate
+                .query(GET_ALL_GREETINGS_SQL,
+                       new GreetingRowMapper());
         return greetingList.toArray(new Greeting[0]);
+    }
+
+    @Override
+    public void removeAllGreetings() {
+        MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+        namedParameterJdbcTemplate.update(REMOVE_ALL_GREETINGS_SQL, namedParameters);
     }
 
     private static class GreetingRowMapper implements RowMapper<Greeting> {

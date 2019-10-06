@@ -7,4 +7,6 @@ public interface GreetingDao {
     Greeting addGreeting(Greeting greeting);
 
     Greeting[] getAllGreetings();
+
+    void removeAllGreetings();
 }
