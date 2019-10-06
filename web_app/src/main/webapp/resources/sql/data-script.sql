@@ -1,1 +1,1 @@
-INSERT INTO greeting VALUES ( -20, 'TEST' );
+INSERT INTO greeting VALUES ( -20, 'SOME HISTORY HERE' );
