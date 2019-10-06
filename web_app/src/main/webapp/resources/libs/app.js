@@ -2,16 +2,17 @@ var stompClient = null;
 
 function setConnected(connected) {
     if (connected) {
-        $("#connect").hide();
-        $("#disconnect").show();
+        $("#formNicknameDisconnected").hide();
+        $("#labelWelcome").text(() => ('Welcome, ' + $("#nicknameInput").val()));
+        $("#divMessage").show();
+        $("#formNicknameConnected").show();
         $("#conversation").show();
-        $("#nicknameInput").prop("disabled", true);
     }
     else {
-        $("#disconnect").hide();
-        $("#connect").show();
+        $("#formNicknameConnected").hide();
+        $("#divMessage").hide();
         $("#conversation").hide();
-        $("#nicknameInput").prop("disabled", false);
+        $("#formNicknameDisconnected").show();
     }
     $("#greetings").html("");
 }
@@ -38,7 +39,9 @@ function disconnect() {
 }
 
 function sendMessage() {
-    stompClient.send("/app/hello", {}, JSON.stringify({'message': $("#messageInput").val(), 'nickname': $("#nicknameInput").val()}));
+    const messageInput = $("#messageInput");
+    stompClient.send("/app/hello", {}, JSON.stringify({'message': messageInput.val(), 'nickname': $("#nicknameInput").val()}));
+    messageInput.val('');
 }
 
 function showFullMessage(fullMessage) {
@@ -50,7 +53,8 @@ $(function () {
         e.preventDefault();
     });
     $("#conversation").hide();
-    $("#disconnect").hide();
+    $("#formNicknameConnected").hide();
+    $("#divMessage").hide();
     $( "#connect" ).click(function() { connect(); });
     $( "#disconnect" ).click(function() { disconnect(); });
     $( "#messageSend" ).click(function() { sendMessage(); });
