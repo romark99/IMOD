@@ -13,43 +13,42 @@
 <noscript><h2 style="color: #ff0000">Seems your browser doesn't support Javascript! Websocket relies on Javascript being
     enabled. Please enable
     Javascript and reload this page!</h2></noscript>
-<div class="container mt-5">
-    <div class="row">
-        <div class="col">
-            <form id="formNicknameDisconnected">
-                <div class="form-group">
-                    <label for="nicknameInput">What is your nickname?</label>
-                    <input type="text" id="nicknameInput" class="fnt-md form-control" placeholder="Your nickname here...">
-                </div>
-                <button id="connect" class="btn fnt-md btn-success" type="submit">Connect</button>
-            </form>
-            <form id="formNicknameConnected">
-                <div class="form-group">
-                    <label id="labelWelcome">Welcome, noname!</label>
-                </div>
-                <button id="disconnect" class="btn fnt-md btn-danger" type="submit">Disconnect</button>
-            </form>
-        </div>
+<div class="divGrid mt-5 px-3">
+    <div id="divConnectButtons">
+        <button id="connect" class="btn fnt-md btn-success" type="submit">Connect</button>
+        <button id="disconnect" class="btn fnt-md btn-danger" type="submit">Disconnect</button>
     </div>
-    <div class="row mt-3">
-        <div class="col-md-12">
-            <table id="conversation" class="table table-striped">
-                <thead>
-                </thead>
-                <tbody id="greetings">
-                </tbody>
-            </table>
-        </div>
+    <div id="divHistoryButtons">
+        <button class="btn fnt-md btn-outline-primary mt-3">Show History</button>
+        <button class="btn fnt-md btn-outline-danger mt-4">Delete History</button>
+        <button id="btnClearScreen" class="btn fnt-md btn-outline-danger mt-4">Clear Screen</button>
+    </div>
+    <div id="divMainContent">
+        <form id="formNicknameDisconnected">
+            <div class="form-group">
+                <label id="labelWelcome" for="nicknameInput">What is your nickname?</label>
+                <input type="text" id="nicknameInput" class="fnt-md form-control"
+                       placeholder="Your nickname here...">
+            </div>
+        </form>
+    </div>
+    <div id="divChatMessages">
+        <table id="conversation" class="table table-striped">
+            <thead>
+            </thead>
+            <tbody id="greetings">
+            </tbody>
+        </table>
     </div>
 </div>
 <div id="divMessage" class="fixed-bottom p-3">
-    <div class="mx-3">
+    <form class="mx-3">
         <div class="input-group">
             <input type="text" id="messageInput" class="form-control" aria-label="Large"
                    aria-describedby="inputGroup-sizing-sm">
-            <button type="button" id="messageSend" class="btn fnt-bg btn-primary">Send</button>
+            <button type="submit" id="messageSend" class="btn fnt-bg btn-primary">Send</button>
         </div>
-    </div>
+    </form>
 </div>
 </body>
 </html>

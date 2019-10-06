@@ -14,3 +14,35 @@ body {
 .fnt-md {
     font-size: 22px;
 }
+
+.divGrid {
+    display: grid;
+    grid-template-columns: 2fr 3fr 2fr 24fr 4fr;
+    grid-template-rows: 15% 1fr;
+}
+
+#divHistoryButtons {
+    grid-column: 2 / 3;
+    grid-row: 2 / 3;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+#divMainContent {
+    grid-column: 4 / 5;
+    grid-row: 1 / 2;
+}
+
+#divChatMessages {
+    grid-column: 4 / 5;
+    grid-row: 2 / 3;
+}
+
+#divConnectButtons {
+    grid-column: 2 / 3;
+    grid-row: 1 / 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}

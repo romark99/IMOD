@@ -2,17 +2,23 @@ var stompClient = null;
 
 function setConnected(connected) {
     if (connected) {
-        $("#formNicknameDisconnected").hide();
-        $("#labelWelcome").text(() => ('Welcome, ' + $("#nicknameInput").val()));
+        $("#connect").hide();
+        const nicknameInput = $("#nicknameInput");
+        nicknameInput.hide();
+        $("#labelWelcome").text(() => ('Welcome, ' + nicknameInput.val() + '!'));
+        $("#divHistoryButtons").show();
         $("#divMessage").show();
-        $("#formNicknameConnected").show();
         $("#conversation").show();
-    }
-    else {
-        $("#formNicknameConnected").hide();
+        $("#disconnect").show();
+        $("#messageInput").val('').focus();
+    } else {
+        $("#disconnect").hide();
         $("#divMessage").hide();
         $("#conversation").hide();
-        $("#formNicknameDisconnected").show();
+        $("#divHistoryButtons").hide();
+        $("#labelWelcome").text(() => ('What is your nickname?'));
+        $("#nicknameInput").show();
+        $("#connect").show();
     }
     $("#greetings").html("");
 }
@@ -38,10 +44,17 @@ function disconnect() {
     console.log("Disconnected");
 }
 
+function clearScreen() {
+    $("#greetings").html("");
+}
+
 function sendMessage() {
     const messageInput = $("#messageInput");
-    stompClient.send("/app/hello", {}, JSON.stringify({'message': messageInput.val(), 'nickname': $("#nicknameInput").val()}));
-    messageInput.val('');
+    stompClient.send("/app/hello", {}, JSON.stringify({
+        'message': messageInput.val(),
+        'nickname': $("#nicknameInput").val()
+    }));
+    messageInput.val('').focus();
 }
 
 function showFullMessage(fullMessage) {
@@ -53,10 +66,20 @@ $(function () {
         e.preventDefault();
     });
     $("#conversation").hide();
-    $("#formNicknameConnected").hide();
+    $("#disconnect").hide();
     $("#divMessage").hide();
-    $( "#connect" ).click(function() { connect(); });
-    $( "#disconnect" ).click(function() { disconnect(); });
-    $( "#messageSend" ).click(function() { sendMessage(); });
+    $("#divHistoryButtons").hide();
+    $("#connect").click(function () {
+        connect();
+    });
+    $("#disconnect").click(function () {
+        disconnect();
+    });
+    $("#messageSend").click(function () {
+        sendMessage();
+    });
+    $("#btnClearScreen").click(function () {
+        clearScreen();
+    });
 });
 
