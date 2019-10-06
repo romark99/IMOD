@@ -1,12 +1,14 @@
 var stompClient = null;
 
 function setConnected(connected) {
-    $("#connect").prop("disabled", connected);
-    $("#disconnect").prop("disabled", !connected);
     if (connected) {
+        $("#connect").hide();
+        $("#disconnect").show();
         $("#conversation").show();
     }
     else {
+        $("#disconnect").hide();
+        $("#connect").show();
         $("#conversation").hide();
     }
     $("#greetings").html("");
@@ -46,6 +48,7 @@ $(function () {
         e.preventDefault();
     });
     $("#conversation").hide();
+    $("#disconnect").hide();
     $( "#connect" ).click(function() { connect(); });
     $( "#disconnect" ).click(function() { disconnect(); });
     $( "#messageSend" ).click(function() { sendMessage(); });
