@@ -14,6 +14,21 @@ public class MessageController {
     @SendTo("/topic/greetings")
     public Greeting greeting(InputMessage message) throws Exception {
         Thread.sleep(1000); // simulated delay
+        return new Greeting(HtmlUtils.htmlEscape(message.getTime()) + " " +
+                            HtmlUtils.htmlEscape(message.getNickname()) + " wrote: '" +
+                            HtmlUtils.htmlEscape(message.getMessage()) + "'");
+    }
+
+    @MessageMapping("/showHistory")
+    @SendTo("/topic/showHistory")
+    public Greeting showHistory(InputMessage message) {
+        return new Greeting(HtmlUtils.htmlEscape(message.getNickname()) + " wrote: '" +
+                           HtmlUtils.htmlEscape(message.getMessage()) + "'");
+    }
+
+    @MessageMapping("/removeHistory")
+    @SendTo("/topic/removeHistory")
+    public Greeting removeHistory(InputMessage message) throws Exception {
         return new Greeting(HtmlUtils.htmlEscape(message.getNickname()) + " wrote: '" +
                             HtmlUtils.htmlEscape(message.getMessage()) + "'");
     }

@@ -1,11 +1,23 @@
 var stompClient = null;
+var nickname = null;
+
+// For todays date;
+Date.prototype.today = function () {
+    return ((this.getDate() < 10)?"0":"") + this.getDate() +"/"+(((this.getMonth()+1) < 10)?"0":"") + (this.getMonth()+1) +"/"+ this.getFullYear();
+};
+
+// For the time now
+Date.prototype.timeNow = function () {
+    return ((this.getHours() < 10)?"0":"") + this.getHours() +":"+ ((this.getMinutes() < 10)?"0":"") + this.getMinutes() +":"+ ((this.getSeconds() < 10)?"0":"") + this.getSeconds();
+};
 
 function setConnected(connected) {
     if (connected) {
         $("#connect").hide();
         const nicknameInput = $("#nicknameInput");
         nicknameInput.hide();
-        $("#labelWelcome").text(() => ('Welcome, ' + nicknameInput.val() + '!'));
+        nickname = nicknameInput.val();
+        $("#labelWelcome").text(() => ('Welcome, ' + nickname + '!'));
         $("#divHistoryButtons").show();
         $("#divMessage").show();
         $("#conversation").show();
@@ -16,6 +28,7 @@ function setConnected(connected) {
         $("#divMessage").hide();
         $("#conversation").hide();
         $("#divHistoryButtons").hide();
+        nickname = null;
         $("#labelWelcome").text(() => ('What is your nickname?'));
         $("#nicknameInput").show();
         $("#connect").show();
@@ -33,6 +46,10 @@ function connect() {
             const fullMessage = JSON.parse(greeting.body).content;
             showFullMessage(fullMessage);
         });
+        stompClient.subscribe('/topic/showHistory' , function (greetings) {
+            const fullMessages = JSON.parse(greeting.body);
+            showFullMessages(fullMessages);
+        })
     });
 }
 
@@ -50,15 +67,33 @@ function clearScreen() {
 
 function sendMessage() {
     const messageInput = $("#messageInput");
+    const newDate = new Date();
+    const datetime = newDate.today() + " @ " + newDate.timeNow();
     stompClient.send("/app/hello", {}, JSON.stringify({
         'message': messageInput.val(),
-        'nickname': $("#nicknameInput").val()
+        'nickname': $("#nicknameInput").val(),
+        'time' : datetime
     }));
     messageInput.val('').focus();
 }
 
+function showHistory() {
+    stompClient.send("/app/showHistory", {});
+}
+
+function deleteHistory() {
+    stompClient.send("/app/deleteHistory", {});
+}
+
 function showFullMessage(fullMessage) {
     $("#greetings").append("<tr><td>" + fullMessage + "</td></tr>");
+}
+
+function showFullMessages(fullMessages) {
+    clearScreen();
+    fullMessages.forEach(fullMessage => {
+        showFullMessage(fullMessage);
+    })
 }
 
 $(function () {
@@ -80,6 +115,12 @@ $(function () {
     });
     $("#btnClearScreen").click(function () {
         clearScreen();
+    });
+    $("#btnShowHistory").click(function() {
+        showHistory();
+    });
+    $("#btnDeleteHistory").click(function() {
+        deleteHistory();
     });
 });
 

@@ -6,6 +6,8 @@ public class InputMessage {
 
     private String nickname;
 
+    private String time;
+
     public InputMessage() {
     }
 
@@ -25,11 +27,20 @@ public class InputMessage {
         this.nickname = nickname;
     }
 
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
     @Override
     public String toString() {
         return "InputMessage{" +
                "message='" + message + '\'' +
                ", nickname='" + nickname + '\'' +
+               ", time='" + time + '\'' +
                '}';
     }
 }
