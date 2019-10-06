@@ -16,7 +16,7 @@ public class MessageController {
         Thread.sleep(1000); // simulated delay
         return new Greeting("Welcome, " + HtmlUtils.htmlEscape(message.getNickname()) +
                             "! You wrote: '" +
-                            HtmlUtils.htmlEscape(message.getMessage()) + "'.");
+                            HtmlUtils.htmlEscape(message.getMessage()) + "'");
     }
 
 }

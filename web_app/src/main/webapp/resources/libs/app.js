@@ -5,11 +5,13 @@ function setConnected(connected) {
         $("#connect").hide();
         $("#disconnect").show();
         $("#conversation").show();
+        $("#nicknameInput").prop("disabled", true);
     }
     else {
         $("#disconnect").hide();
         $("#connect").show();
         $("#conversation").hide();
+        $("#nicknameInput").prop("disabled", false);
     }
     $("#greetings").html("");
 }
@@ -36,7 +38,7 @@ function disconnect() {
 }
 
 function sendMessage() {
-    stompClient.send("/app/hello", {}, JSON.stringify({'message': $("#messageInput").val()}));
+    stompClient.send("/app/hello", {}, JSON.stringify({'message': $("#messageInput").val(), 'nickname': $("#nicknameInput").val()}));
 }
 
 function showFullMessage(fullMessage) {

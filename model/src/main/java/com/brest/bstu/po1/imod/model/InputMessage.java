@@ -4,7 +4,7 @@ public class InputMessage {
 
     private String message;
 
-    private String nickname = "Roma";
+    private String nickname;
 
     public InputMessage() {
     }
