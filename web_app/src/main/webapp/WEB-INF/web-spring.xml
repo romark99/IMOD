@@ -19,13 +19,22 @@
         <property name="password" value=""/>
     </bean>
 
-<!--    <jdbc:initialize-database>-->
-<!--        <jdbc:script location="./resources/sql/create-tables.sql"/>-->
-<!--        <jdbc:script location="./resources/sql/data-script.sql"/>-->
-<!--    </jdbc:initialize-database>-->
+    <jdbc:initialize-database>
+        <jdbc:script location="./resources/sql/create-tables.sql"/>
+        <jdbc:script location="./resources/sql/data-script.sql"/>
+    </jdbc:initialize-database>
 
     <bean id="transactionalManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="namedParameterJdbcTemplate"
+          class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
+        <constructor-arg name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="greetingDao" class="com.brest.bstu.po1.imod.dao.GreetingDaoImpl">
+        <property name="namedParameterJdbcTemplate" ref="namedParameterJdbcTemplate"/>
     </bean>
 
     <mvc:default-servlet-handler/>
@@ -59,6 +68,15 @@
     <bean id="viewResolver" class="org.thymeleaf.spring5.view.ThymeleafViewResolver">
         <property name="templateEngine" ref="templateEngine" />
         <property name="characterEncoding" value="UTF-8" />
+    </bean>
+
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:sql.properties</value>
+            </list>
+        </property>
+        <property name="ignoreUnresolvablePlaceholders" value="true"/>
     </bean>
 
 </beans>

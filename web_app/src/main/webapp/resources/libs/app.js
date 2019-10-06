@@ -47,7 +47,7 @@ function connect() {
             showFullMessage(fullMessage);
         });
         stompClient.subscribe('/topic/showHistory' , function (greetings) {
-            const fullMessages = JSON.parse(greeting.body);
+            const fullMessages = JSON.parse(greetings.body);
             showFullMessages(fullMessages);
         })
     });
@@ -92,7 +92,7 @@ function showFullMessage(fullMessage) {
 function showFullMessages(fullMessages) {
     clearScreen();
     fullMessages.forEach(fullMessage => {
-        showFullMessage(fullMessage);
+        showFullMessage(fullMessage.content);
     })
 }
 

@@ -4,6 +4,8 @@ public class Greeting {
 
     private String content;
 
+    private Integer id;
+
     public Greeting() {
     }
 
@@ -13,5 +15,17 @@ public class Greeting {
 
     public String getContent() {
         return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 }

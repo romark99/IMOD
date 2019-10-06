@@ -20,6 +20,7 @@
     </properties>
 
     <modules>
+        <module>dao</module>
         <module>model</module>
         <module>web_app</module>
     </modules>
@@ -29,6 +30,16 @@
             <dependency>
                 <groupId>com.brest.bstu.po1.imod</groupId>
                 <artifactId>model</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.brest.bstu.po1.imod</groupId>
+                <artifactId>dao</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.brest.bstu.po1.imod</groupId>
+                <artifactId>web_app</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

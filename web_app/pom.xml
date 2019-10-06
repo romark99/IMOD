@@ -59,6 +59,10 @@
             <groupId>com.brest.bstu.po1.imod</groupId>
             <artifactId>model</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.brest.bstu.po1.imod</groupId>
+            <artifactId>dao</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

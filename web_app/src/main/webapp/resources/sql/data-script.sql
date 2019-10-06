@@ -1,0 +1,1 @@
+INSERT INTO greeting VALUES ( -20, 'TEST' );
