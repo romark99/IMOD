@@ -3,6 +3,7 @@ package com.brest.bstu.po1.imod.web_app;
 import com.brest.bstu.po1.imod.dao.GreetingDao;
 import com.brest.bstu.po1.imod.model.Greeting;
 import com.brest.bstu.po1.imod.model.InputMessage;
+import com.brest.bstu.po1.imod.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -39,4 +40,9 @@ public class MessageController {
         return true;
     }
 
+    @MessageMapping("/typing")
+    @SendTo("/topic/typing")
+    public User triggerTyping(User user) {
+        return user;
+    }
 }

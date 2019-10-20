@@ -55,6 +55,10 @@ function connect() {
                 clearScreen();
             }
         });
+        stompClient.subscribe('/topic/typing' , function (user) {
+            const nickname = JSON.parse(user.body).nickname;
+            showTyping(nickname);
+        });
     });
 }
 
@@ -80,6 +84,22 @@ function sendMessage() {
         'time' : datetime
     }));
     messageInput.val('').focus();
+}
+
+function triggerTyping() {
+    stompClient.send("/app/typing", {}, JSON.stringify({
+        'nickname': nickname
+    }));
+}
+
+function showTyping(nickname) {
+    const spanWhoIsTyping =$("#spanWhoIsTyping");
+    spanWhoIsTyping.show();
+    spanWhoIsTyping.text(() => (nickname + ' is typing...'));
+    const hideTyping = () => {
+        spanWhoIsTyping.hide();
+    };
+    setTimeout(hideTyping, 6000);
 }
 
 function showHistory() {
@@ -109,6 +129,7 @@ $(function () {
     $("#disconnect").hide();
     $("#divMessage").hide();
     $("#divHistoryButtons").hide();
+    $("#spanWhoIsTyping").hide();
     $("#connect").click(function () {
         connect();
     });
@@ -126,6 +147,9 @@ $(function () {
     });
     $("#btnDeleteHistory").click(function() {
         deleteHistory();
+    });
+    $("#messageInput").change(function () {
+        triggerTyping();
     });
 });
 
