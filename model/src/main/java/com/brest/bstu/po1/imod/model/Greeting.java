@@ -1,6 +1,6 @@
 package com.brest.bstu.po1.imod.model;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 
 public class Greeting {
 
@@ -8,7 +8,9 @@ public class Greeting {
 
     private Integer id;
 
-    private Date time;
+    private Timestamp datetime;
+
+    private String datetime_str;
 
     private Integer room;
 
@@ -37,12 +39,12 @@ public class Greeting {
         this.id = id;
     }
 
-    public Date getTime() {
-        return time;
+    public Timestamp getDatetime() {
+        return datetime;
     }
 
-    public void setTime(Date time) {
-        this.time = time;
+    public void setDatetime(Timestamp datetime) {
+        this.datetime = datetime;
     }
 
     public Integer getRoom() {
@@ -59,5 +61,25 @@ public class Greeting {
 
     public void setNickname(String nickname) {
         this.nickname = nickname;
+    }
+
+    public String getDatetime_str() {
+        return datetime_str;
+    }
+
+    public void setDatetime_str(String datetime_str) {
+        this.datetime_str = datetime_str;
+    }
+
+    @Override
+    public String toString() {
+        return "Greeting{" +
+               "content='" + content + '\'' +
+               ", id=" + id +
+               ", datetime=" + datetime +
+               ", datetime_str='" + datetime_str + '\'' +
+               ", room=" + room +
+               ", nickname='" + nickname + '\'' +
+               '}';
     }
 }

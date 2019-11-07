@@ -6,6 +6,6 @@ create table greeting
      			primary key,
      	content varchar(500) not null,
      	nickname varchar(500) not null,
-     	time timestamp not null,
+     	datetime timestamp not null,
      	room integer not null,
      );

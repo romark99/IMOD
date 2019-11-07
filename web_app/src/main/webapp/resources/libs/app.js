@@ -1,15 +1,16 @@
 var stompClient = null;
 var nickname = null;
+var room = 1;
 
 // For todays date;
 Date.prototype.today = function () {
-    return ((this.getDate() < 10)?"0":"") + this.getDate() +"/"+(((this.getMonth()+1) < 10)?"0":"") + (this.getMonth()+1) +"/"+ this.getFullYear();
+    return ((this.getDate() < 10) ? "0" : "") + this.getDate() + "/" + (((this.getMonth() + 1) < 10) ? "0" : "") + (this.getMonth() + 1) + "/" + this.getFullYear();
 };
 
 
 // For the time now
 Date.prototype.timeNow = function () {
-    return ((this.getHours() < 10)?"0":"") + this.getHours() +":"+ ((this.getMinutes() < 10)?"0":"") + this.getMinutes() +":"+ ((this.getSeconds() < 10)?"0":"") + this.getSeconds() + ":" + this.getMilliseconds();
+    return ((this.getHours() < 10) ? "0" : "") + this.getHours() + ":" + ((this.getMinutes() < 10) ? "0" : "") + this.getMinutes() + ":" + ((this.getSeconds() < 10) ? "0" : "") + this.getSeconds() + ":" + this.getMilliseconds();
 };
 
 function setConnected(connected) {
@@ -44,19 +45,24 @@ function connect() {
         setConnected(true);
         console.log('Connected: ' + frame);
         stompClient.subscribe('/topic/greetings', function (greeting) {
-            const fullMessage = JSON.parse(greeting.body).content;
+            const content = JSON.parse(greeting.body).content;
+            const datetime = JSON.parse(greeting.body).datetime_str;
+            const nickname = JSON.parse(greeting.body).nickname;
+            const room = JSON.parse(greeting.body).room;
+            const fullMessage = "Nickname: " + nickname + ", Room: " + room + ", Date: " + datetime + ", Content: '" + content + "'";
+            console.log(fullMessage);
             showFullMessage(fullMessage);
         });
-        stompClient.subscribe('/topic/showHistory' , function (greetings) {
+        stompClient.subscribe('/topic/showHistory', function (greetings) {
             const fullMessages = JSON.parse(greetings.body);
             showFullMessages(fullMessages);
         });
-        stompClient.subscribe('/topic/removeHistory' , function (result) {
+        stompClient.subscribe('/topic/removeHistory', function (result) {
             if (result) {
                 clearScreen();
             }
         });
-        stompClient.subscribe('/topic/typing' , function (user) {
+        stompClient.subscribe('/topic/typing', function (user) {
             const nickname = JSON.parse(user.body).nickname;
             showTyping(nickname);
         });
@@ -80,9 +86,9 @@ function sendMessage() {
     const newDate = new Date();
     const datetime = newDate.today() + " @ " + newDate.timeNow();
     stompClient.send("/app/hello", {}, JSON.stringify({
-        'message': messageInput.val(),
+        'content': messageInput.val(),
         'nickname': $("#nicknameInput").val(),
-        'time' : datetime
+        'room': room
     }));
     messageInput.val('').focus();
 }
@@ -94,7 +100,7 @@ function triggerTyping() {
 }
 
 function showTyping(nickname) {
-    const spanWhoIsTyping =$("#spanWhoIsTyping");
+    const spanWhoIsTyping = $("#spanWhoIsTyping");
     spanWhoIsTyping.show();
     spanWhoIsTyping.text(() => (nickname + ' is typing...'));
     const hideTyping = () => {
@@ -143,10 +149,10 @@ $(function () {
     $("#btnClearScreen").click(function () {
         clearScreen();
     });
-    $("#btnShowHistory").click(function() {
+    $("#btnShowHistory").click(function () {
         showHistory();
     });
-    $("#btnDeleteHistory").click(function() {
+    $("#btnDeleteHistory").click(function () {
         deleteHistory();
     });
     $("#messageInput").change(function () {
