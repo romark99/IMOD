@@ -19,9 +19,8 @@ public class MessageController {
     @MessageMapping("/hello")
     @SendTo("/topic/greetings")
     public Greeting greeting(InputMessage message) throws Exception {
-        Greeting greeting = new Greeting(HtmlUtils.htmlEscape(message.getTime()) + " " +
-                                         HtmlUtils.htmlEscape(message.getNickname()) + " wrote: '" +
-                                         HtmlUtils.htmlEscape(message.getMessage()) + "'");
+        Greeting greeting = new Greeting();
+        greeting.setContent(HtmlUtils.htmlEscape(message.getTime()));
         Greeting newGreeting = greetingDao.addGreeting(greeting);
         Thread.sleep(500); // simulated delay
         return newGreeting;

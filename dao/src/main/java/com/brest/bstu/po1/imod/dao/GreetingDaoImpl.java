@@ -18,8 +18,9 @@ public class GreetingDaoImpl implements GreetingDao {
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     private static final String ID = "id";
-
     private static final String CONTENT = "content";
+    private static final String NICKNAME = "nickname";
+    private static final String ROOM = "room";
 
     @Value("${greeting.insert}")
     private String ADD_GREETING_SQL;
@@ -39,6 +40,8 @@ public class GreetingDaoImpl implements GreetingDao {
     public Greeting addGreeting(Greeting greeting) {
         MapSqlParameterSource namedParameters = new MapSqlParameterSource();
         namedParameters.addValue(CONTENT, greeting.getContent());
+        namedParameters.addValue(NICKNAME, greeting.getNickname());
+        namedParameters.addValue(ROOM, greeting.getRoom());
 
         KeyHolder generatedKeyHolder = new GeneratedKeyHolder();
         namedParameterJdbcTemplate
