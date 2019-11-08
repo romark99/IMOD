@@ -7,5 +7,5 @@ create table greeting
      	content varchar(500) not null,
      	nickname varchar(500) not null,
      	datetime timestamp not null,
-     	room integer not null,
+     	room integer not null
      );

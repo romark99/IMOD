@@ -19,7 +19,6 @@ function setConnected(connected) {
         $("#divMessage").hide();
         $("#conversation").hide();
         $("#divHistoryButtons").hide();
-        nickname = null;
         $("#labelWelcome").text(() => ('What is your nickname?'));
         $("#nicknameInput").show();
         $("#connect").show();
@@ -40,14 +39,22 @@ function connect() {
                 nickname: JSON.parse(greeting.body).nickname,
                 room: JSON.parse(greeting.body).room
             };
-            showFullMessage(message);
+            if (message.room === parseInt(room)) {
+                showFullMessage(message);
+            }
         });
         stompClient.subscribe('/topic/showHistory', function (greetings) {
             const fullMessages = JSON.parse(greetings.body);
-            showFullMessages(fullMessages);
+            if (fullMessages["room"] === parseInt(room)) {
+                clearScreen();
+                showFullMessages(fullMessages.greetings);
+            }
         });
-        stompClient.subscribe('/topic/removeHistory', function (result) {
-            if (result) {
+        stompClient.subscribe('/topic/removeHistory', function (aRoom) {
+            aRoom = JSON.parse(aRoom.body);
+            console.log("aROOM: " + aRoom);
+            console.log("ROOM: " + room);
+            if (aRoom == room) {
                 clearScreen();
             }
         });
@@ -55,6 +62,7 @@ function connect() {
             const nickname = JSON.parse(user.body).nickname;
             showTyping(nickname);
         });
+        showHistory();
     });
 }
 
@@ -110,7 +118,7 @@ function showFullMessage(message) {
 }
 
 function showFullMessages(fullMessages) {
-    clearScreen();
+    console.log("FULL MESSAGES: " + JSON.stringify(fullMessages));
     fullMessages.forEach(fullMessage => {
         showFullMessage(fullMessage);
     })
@@ -146,7 +154,6 @@ $(function () {
     $("#messageInput").change(function () {
         triggerTyping();
     });
-
     $("input[name='optradio']").on("change", function () {
         room = this.value;
         showHistory();

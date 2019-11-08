@@ -2,6 +2,7 @@ package com.brest.bstu.po1.imod.web_app;
 
 import com.brest.bstu.po1.imod.dao.GreetingDao;
 import com.brest.bstu.po1.imod.model.Greeting;
+import com.brest.bstu.po1.imod.model.GreetingsAndRoom;
 import com.brest.bstu.po1.imod.model.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -32,20 +33,23 @@ public class MessageController {
 
     @MessageMapping("/showHistory")
     @SendTo("/topic/showHistory")
-    public Greeting[] showHistory(Integer room) {
+    public GreetingsAndRoom showHistory(Integer room) {
         LOGGER.debug("showHistory({})", room);
         Greeting[] greetings = greetingDao.getAllGreetingsByRoom(room);
+        GreetingsAndRoom greetingsAndRoom = new GreetingsAndRoom();
+        greetingsAndRoom.setGreetings(greetings);
+        greetingsAndRoom.setRoom(room);
         LOGGER.debug("showHistory() returned {}", Arrays.toString(greetings));
-        return greetings;
+        return greetingsAndRoom;
     }
 
     @MessageMapping("/removeHistory")
     @SendTo("/topic/removeHistory")
-    public boolean removeHistory(Integer room) {
+    public Integer removeHistory(Integer room) {
         LOGGER.debug("removeHistory({})", room);
         greetingDao.removeAllGreetingsByRoom(room);
-        LOGGER.debug("removeHistory() return true");
-        return true;
+        LOGGER.debug("removeHistory() return {}", room);
+        return room;
     }
 
     @MessageMapping("/typing")

@@ -90,6 +90,7 @@ public class GreetingDaoImpl implements GreetingDao {
             goods.setContent(resultSet.getString(CONTENT));
             goods.setNickname(resultSet.getString(NICKNAME));
             goods.setDatetime(resultSet.getTimestamp(DATETIME));
+            goods.setDatetime_str(goods.getDatetime().toString());
             goods.setRoom(resultSet.getInt(ROOM));
             return goods;
         }
