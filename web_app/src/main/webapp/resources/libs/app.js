@@ -14,6 +14,9 @@ function setConnected(connected) {
         $("#conversation").show();
         $("#disconnect").show();
         $("#messageInput").val('').focus();
+        $("#radio1").prop("checked", true);
+        room = 1;
+        showHistory();
     } else {
         $("#disconnect").hide();
         $("#divMessage").hide();
@@ -113,7 +116,8 @@ function deleteHistory() {
 }
 
 function showFullMessage(message) {
-    const fullMessage = "Nickname: " + message.nickname + ", Room: " + message.room + ", Date: " + message.datetime_str + ", Content: '" + message.content + "'";
+    // const fullMessage = "Nickname: " + message.nickname + ", Room: " + message.room + ", Date: " + message.datetime_str + ", Content: '" + message.content + "'";
+    const fullMessage = message.datetime_str + ", " + message.nickname + " wrote: '" + message.content + "'";
     $("#greetings").append("<tr><td>" + fullMessage + "</td></tr>");
 }
 
