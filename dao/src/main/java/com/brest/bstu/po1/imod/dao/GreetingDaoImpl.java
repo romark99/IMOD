@@ -62,19 +62,21 @@ public class GreetingDaoImpl implements GreetingDao {
     }
 
     @Override
-    public Greeting[] getAllGreetings() {
-        LOGGER.debug("getAllGreetings()");
+    public Greeting[] getAllGreetingsByRoom(Integer room) {
+        LOGGER.debug("getAllGreetingsByRoom({})", room);
+        MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+        namedParameters.addValue(ROOM, room);
         List<Greeting> greetingList = namedParameterJdbcTemplate
-                .query(GET_ALL_GREETINGS_SQL,
-                       new GreetingRowMapper());
-        LOGGER.debug("getAllGreetings() returned {}", greetingList);
+                .query(GET_ALL_GREETINGS_SQL, namedParameters, new GreetingRowMapper());
+        LOGGER.debug("getAllGreetingsByRoom() returned {}", greetingList);
         return greetingList.toArray(new Greeting[0]);
     }
 
     @Override
-    public void removeAllGreetings() {
-        LOGGER.debug("removeAllGreetings()");
+    public void removeAllGreetingsByRoom(Integer room) {
+        LOGGER.debug("removeAllGreetings({})", room);
         MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+        namedParameters.addValue(ROOM, room);
         namedParameterJdbcTemplate.update(REMOVE_ALL_GREETINGS_SQL, namedParameters);
         LOGGER.debug("removeAllGreetings returned.");
     }

@@ -2,17 +2,6 @@ var stompClient = null;
 var nickname = null;
 var room = 1;
 
-// For todays date;
-Date.prototype.today = function () {
-    return ((this.getDate() < 10) ? "0" : "") + this.getDate() + "/" + (((this.getMonth() + 1) < 10) ? "0" : "") + (this.getMonth() + 1) + "/" + this.getFullYear();
-};
-
-
-// For the time now
-Date.prototype.timeNow = function () {
-    return ((this.getHours() < 10) ? "0" : "") + this.getHours() + ":" + ((this.getMinutes() < 10) ? "0" : "") + this.getMinutes() + ":" + ((this.getSeconds() < 10) ? "0" : "") + this.getSeconds() + ":" + this.getMilliseconds();
-};
-
 function setConnected(connected) {
     if (connected) {
         $("#connect").hide();
@@ -45,13 +34,13 @@ function connect() {
         setConnected(true);
         console.log('Connected: ' + frame);
         stompClient.subscribe('/topic/greetings', function (greeting) {
-            const content = JSON.parse(greeting.body).content;
-            const datetime = JSON.parse(greeting.body).datetime_str;
-            const nickname = JSON.parse(greeting.body).nickname;
-            const room = JSON.parse(greeting.body).room;
-            const fullMessage = "Nickname: " + nickname + ", Room: " + room + ", Date: " + datetime + ", Content: '" + content + "'";
-            console.log(fullMessage);
-            showFullMessage(fullMessage);
+            const message = {
+                content: JSON.parse(greeting.body).content,
+                datetime_str: JSON.parse(greeting.body).datetime_str,
+                nickname: JSON.parse(greeting.body).nickname,
+                room: JSON.parse(greeting.body).room
+            };
+            showFullMessage(message);
         });
         stompClient.subscribe('/topic/showHistory', function (greetings) {
             const fullMessages = JSON.parse(greetings.body);
@@ -83,8 +72,6 @@ function clearScreen() {
 
 function sendMessage() {
     const messageInput = $("#messageInput");
-    const newDate = new Date();
-    const datetime = newDate.today() + " @ " + newDate.timeNow();
     stompClient.send("/app/hello", {}, JSON.stringify({
         'content': messageInput.val(),
         'nickname': $("#nicknameInput").val(),
@@ -110,21 +97,22 @@ function showTyping(nickname) {
 }
 
 function showHistory() {
-    stompClient.send("/app/showHistory", {});
+    stompClient.send("/app/showHistory", {}, room);
 }
 
 function deleteHistory() {
-    stompClient.send("/app/removeHistory", {});
+    stompClient.send("/app/removeHistory", {}, room);
 }
 
-function showFullMessage(fullMessage) {
+function showFullMessage(message) {
+    const fullMessage = "Nickname: " + message.nickname + ", Room: " + message.room + ", Date: " + message.datetime_str + ", Content: '" + message.content + "'";
     $("#greetings").append("<tr><td>" + fullMessage + "</td></tr>");
 }
 
 function showFullMessages(fullMessages) {
     clearScreen();
     fullMessages.forEach(fullMessage => {
-        showFullMessage(fullMessage.content);
+        showFullMessage(fullMessage);
     })
 }
 
@@ -157,6 +145,11 @@ $(function () {
     });
     $("#messageInput").change(function () {
         triggerTyping();
+    });
+
+    $("input[name='optradio']").on("change", function () {
+        room = this.value;
+        showHistory();
     });
 });
 

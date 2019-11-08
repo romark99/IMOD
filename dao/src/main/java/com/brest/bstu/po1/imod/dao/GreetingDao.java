@@ -6,7 +6,7 @@ public interface GreetingDao {
 
     Greeting addGreeting(Greeting greeting);
 
-    Greeting[] getAllGreetings();
+    Greeting[] getAllGreetingsByRoom(Integer room);
 
-    void removeAllGreetings();
+    void removeAllGreetingsByRoom(Integer room);
 }

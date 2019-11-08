@@ -32,18 +32,18 @@ public class MessageController {
 
     @MessageMapping("/showHistory")
     @SendTo("/topic/showHistory")
-    public Greeting[] showHistory() {
-        LOGGER.debug("showHistory()");
-        Greeting[] greetings = greetingDao.getAllGreetings();
+    public Greeting[] showHistory(Integer room) {
+        LOGGER.debug("showHistory({})", room);
+        Greeting[] greetings = greetingDao.getAllGreetingsByRoom(room);
         LOGGER.debug("showHistory() returned {}", Arrays.toString(greetings));
         return greetings;
     }
 
     @MessageMapping("/removeHistory")
     @SendTo("/topic/removeHistory")
-    public boolean removeHistory() {
-        LOGGER.debug("removeHistory()");
-        greetingDao.removeAllGreetings();
+    public boolean removeHistory(Integer room) {
+        LOGGER.debug("removeHistory({})", room);
+        greetingDao.removeAllGreetingsByRoom(room);
         LOGGER.debug("removeHistory() return true");
         return true;
     }
