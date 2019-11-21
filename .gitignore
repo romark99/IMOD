@@ -29,3 +29,4 @@ target
 web_app_js/node_modules
 /node_modules/
 /web_app_js/
+/src/main/resources/app.properties
